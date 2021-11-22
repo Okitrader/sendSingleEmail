@@ -4,23 +4,17 @@ import pandas as pd
 
 sender_email = 'thewayalgotrading@gmail.com'
 
-subject = """"
-This is the subject
-"""
-contents = """"
-Here is the content of the email!
-Hi!
-"""
-
 yag = yagmail.SMTP(user=sender_email, password=os.getenv('PASSWORD'))
 
 df = pd.read_csv('contacts.csv')
-#print(df)
 
 for index, row in df.iterrows():
-  contents = f""""
-  Hi {row['first_name']} Here is the content of the email!
-Hi!
-  """
+  receiver_email = row['email']
+  subject = 'This is the subject'
+  contents = [f"""
+  Hey, {row['first_name']} you have to pay {row['amount']}
+  Bill is attached!""",
+  row['filepath']
+  ]
   yag.send(to=row['email'], subject = subject, contents=contents)
   print('Email Sent')
